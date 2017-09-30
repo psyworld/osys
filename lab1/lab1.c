@@ -57,19 +57,6 @@ int main(int argc, char ** argv)
     			exit(0);
     		}
 
-    		default: //parent
-    		{ 
- 
-    			int status = 0;
-
-    			clock_t begin = clock();
-    			waitpid(pid, &status, 0);
-    			clock_t end   = clock(); 
-
-    			printf("Parent process waited child process %f seconds \n", 
-    			    (double)(end - begin) / CLOCKS_PER_SEC);
-
-    		}
 	}	
 }
 
