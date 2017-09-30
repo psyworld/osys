@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
 		    //creating 10Mb file
 			int X = 1024 * 1024 * 10;
 
-            FILE* fp = fopen("myfle", "w");
+            FILE* fp = fopen("myfile", "w");
 
             fprintf(fp, "I'm just a child process, a pathetic copy\n My pid = %d \n I'm a parent process! \n  My ppid: %d\n", getpid(), getppid());
                  
