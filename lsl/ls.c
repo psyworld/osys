@@ -30,7 +30,7 @@ int main(int argc, char **argv)
        char date[20];
 
        strftime(date, 20, "%b %d %H:%M", localtime(&(fileStat.st_mtime)));
-       sprintf (output, "%s%s%s%s%s%s%s%s%s%s %s %s %d %5ld %s %s\n",
+       sprintf (output, "%s%s%s%s%s%s%s%s%s%s %s %s %ld %5ld %s %s\n",
        
            (S_ISDIR(fileStat.st_mode))  ? "d"  : "-",
            (fileStat.st_mode & S_IRUSR) ? "r" : "-",
