@@ -13,7 +13,7 @@ size_t my_strlen(char *);
 int main (int argc, char ** argv)
 {
 
-	myprinf("hello.txt", "%s %d %o %c %x %c", 
+	myprinf(0, "%s %d %o %c %x %c", 
 		":( My ugly printf:" , 666, 666, '6', 666, '\n');
 
 	return 0;
