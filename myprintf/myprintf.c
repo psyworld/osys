@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>	    // write(), close() 
 #include <fcntl.h>	    // open(), keys 
-#include <sys/stat.h>	// S_IRUSR 
+#include <sys/stat.h>	// permission
 #include <sys/types.h>	// mode_t 
 #include <stdarg.h> 
 
