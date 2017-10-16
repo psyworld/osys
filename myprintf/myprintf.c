@@ -23,7 +23,7 @@ void myprinf(const char * id, char * format, ...)
 {
 	char *	 	 iterator;
 	char * 	 	 s;
-	unsigned int i;
+	unsigned int 	 i;
 	ssize_t  	 read_bytes;
 	ssize_t  	 written_bytes;
 	int 	 	 fd;
