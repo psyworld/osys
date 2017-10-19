@@ -42,17 +42,19 @@ void myprinf(const char * id, char * format, ...)
 		
 	for (iterator = format; *iterator != '\0'; iterator++)
 	{
-		while(*iterator != '%')
+		while(*iterator != '%' && *iterator != '\0')
 		{
 			i = *iterator;
 			void * data[0];
-			int *p;
-			p = malloc(sizeof *p);
+			int  * p;
+			p 		= malloc(sizeof *p);
 			data[0] = p;
-			*p = i;	
+			*p 		= i;	
 
 			written_bytes = write (fd, data[0], my_strlen(iterator));
 			iterator++;
+
+			free(p);
 		}
 
 		iterator++;
@@ -63,12 +65,14 @@ void myprinf(const char * id, char * format, ...)
 
 				i = va_arg(arg,int);
 				void * data[10];
-				int *p;
-				p = malloc(sizeof *p);
+				int  *p;
+				p 		= malloc(sizeof *p);
 				data[0] = p;
-				*p = i;
+				*p 		= i;
 
 				written_bytes = write (fd, data[0], sizeof(char));
+
+				free(p);
 
 				break;
 			case 'd':
