@@ -37,7 +37,7 @@ void myprinf(const char * id, char * format, ...)
 	else 
 	{
 		fd = open(id, O_RDWR | O_CREAT | O_APPEND, 
-			      S_IRWXU | S_IRWXG | S_IRWXO);
+			         S_IRWXU | S_IRWXG | S_IRWXO);
 	}
 		
 	for (iterator = format; *iterator != '\0'; iterator++)
