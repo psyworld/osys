@@ -6,16 +6,12 @@ const int magic_number = 666;
 
 int arc_write(int fd, char * filename)
 {	
-/*	char	   buffer[BUFFER_SIZE];
-	size_t 	   written_bytes;
-	size_t 	   read_bytes;*/
 	struct ARC_HEADER Header;
 	struct FILE_DATA  Data;
 
 
 	Header.deleted = 0;
 	char * data = data_read(filename);
-	//printf("%s\n", data);
 
 	strncpy(Header.name, filename, filenamesize);
 	strncpy(Data.data, data, filesize);
@@ -25,43 +21,13 @@ int arc_write(int fd, char * filename)
 		write(fd, &magic_number, sizeof(int));
 	}
 
-	//lseek(fd, sizeof(int), SEEK_END);
 	write(fd, &Header, sizeof(struct ARC_HEADER));
-	//lseek(fd, 1, SEEK_CUR);
-	write(fd, &data, sizeof(struct FILE_DATA));
+	write(fd, data, sizeof(struct FILE_DATA));
 
 
 
 	return 0;
 }
-
-/*	int fd1 = open("myarc.stn", O_RDWR | O_CREAT | O_APPEND, 
-	   		         		   S_IRWXU | S_IRWXG | S_IRWXO);
-	if (fd1 == -1)
-	{
-		printf("Archive is broken\n");
-		return 1;
-	};
-	int fd2 = open(file, O_RDWR | O_CREAT | O_APPEND, 
-	   		         	S_IRWXU | S_IRWXG | S_IRWXO);
-	if (fd2 == -1)
-	{
-		printf("File %s is broken\n", file);
-		return 1;
-	};
-	while ((read_bytes = read (fd2, Data.name, 256)) > 0)
-	{		
-		written_bytes = write (fd1, Data.name, read_bytes);
-		if (written_bytes != read_bytes)
-		{
-			printf ("Cannot write\n");
-			return 1;
-		}
-	}
-	close(fd1);
-	close(fd2);
-}
-*/
 /* for arc_write --------------------------------------------------------*/
 char * data_read(char * filename)
 {
@@ -84,7 +50,7 @@ char * data_read(char * filename)
 
 	return data;
 }
-/*------------------------------------------------------------------------*/
+
 int is_empty(int fd)
 {
 	off_t size = lseek(fd, 0, SEEK_END);
@@ -92,6 +58,7 @@ int is_empty(int fd)
 	return size == 0;
 }
 
+/*------------------------------------------------------------------------*/
 int arc_read(int fd, char * filename)
 {
 	struct FILE_DATA  Data;
@@ -101,7 +68,6 @@ int arc_read(int fd, char * filename)
 	lseek(fd, sizeof(magic_number), SEEK_SET);
 	while((read_bytes = read(fd, &Header, sizeof(struct ARC_HEADER))) > 0){
 
-		printf("%s\n", "i am here");
         read(fd, &Data, sizeof(struct FILE_DATA));
 
         if (!strcmp(filename, Header.name))
