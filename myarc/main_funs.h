@@ -25,7 +25,10 @@ struct FILE_DATA
 
 };
 
-int    arc_write(int, char *);
-char * data_read(char *);
-int	   is_empty(int fd);	
-int    arc_read(int, char *);
+int    arc_write (int, char *);
+char * data_read (char *);
+int	   is_empty  (int);	
+int    arc_read  (int, char *);
+int    exist     (int, char *);
+int    arc_delete(int, char *);
+void   arc_list  (int);

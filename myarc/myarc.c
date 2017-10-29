@@ -12,7 +12,11 @@ int main (int argc, char * argv[])
 	}
 
 	arc_write(fd, "test.txt");
+	arc_write(fd, "test1.txt");
 	arc_read(fd, "test.txt");
+	arc_delete(fd, "test.txt");
+	arc_read(fd, "test.txt");
+	arc_list(fd);
 	
 	close(fd);
 	return 0;
