@@ -99,11 +99,11 @@ int arc_read(int fd, char * filename)
 
         read(fd, &Data, sizeof(struct FILE_DATA));
 
-        if (!strcmp(filename, Header.name))
+        if (!strcmp(filename, Header.name) && !(Header.deleted))
         {
             printf("\nFILENAME: %s\n", Header.name);
             printf("\nDATA:\n%s\n", Data.data);
-            printf("deleted %d\n", Header.deleted);
+            //printf("deleted %d\n", Header.deleted);
 
             lseek(fd, 0, SEEK_SET);
 
@@ -129,15 +129,15 @@ int arc_delete(int fd, char * filename)
         {
         	if (Header.deleted)
             {
-        		printf("%s\n", "File has already been deleted");
+        		printf("File %s has already been deleted", Header.name);
+
         		return 1;
         	}
         	else
         	{
-        		printf("..\n");
-            	Header.deleted = 1;
             	off_t cur = lseek(fd, 0, SEEK_CUR);
             	lseek(fd, cur - sizeof(struct ARC_HEADER), SEEK_SET);
+            	Header.deleted = 1;
             	write(fd, &Header, sizeof(struct ARC_HEADER));
 
 			    lseek(fd, 0, SEEK_SET);
@@ -161,11 +161,13 @@ void arc_list(int fd)
 
 	while((read_bytes = read(fd, &Header, sizeof(struct ARC_HEADER))) > 0)
 	{
-		//if (!Header.deleted)
-		//{
-			printf("%s %d \n", Header.name, Header.deleted);
-		//}
+		if (!Header.deleted)
+		{
+			printf("%s \n", Header.name);
+		}
 
         read(fd, &Data, sizeof(struct FILE_DATA));
 	}
+
+	lseek(fd, 0, SEEK_SET);
 }
