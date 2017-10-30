@@ -120,7 +120,7 @@ int arc_delete(int fd, char * filename)
 	struct FILE_DATA Data;
 	struct ARC_HEADER Header;
 	off_t read_bytes;
-	lseek(fd, 0, SEEK_SET);
+	//lseek(fd, 0, SEEK_SET);
 	lseek(fd, sizeof(magic_number), SEEK_SET);
 
 	while((read_bytes = read(fd, &Header, sizeof(struct ARC_HEADER))) > 0)
@@ -135,10 +135,11 @@ int arc_delete(int fd, char * filename)
         	else
         	{
         		printf("..\n");
-            	//off_t cur = lseek(fd, 0, SEEK_CUR);
-            	//lseek(fd, cur - sizeof(struct ARC_HEADER), SEEK_SET);
             	Header.deleted = 1;
+            	off_t cur = lseek(fd, 0, SEEK_CUR);
+            	lseek(fd, cur - sizeof(struct ARC_HEADER), SEEK_SET);
             	write(fd, &Header, sizeof(struct ARC_HEADER));
+
 			    lseek(fd, 0, SEEK_SET);
 
 			    return 0;
@@ -156,10 +157,15 @@ void arc_list(int fd)
 	struct ARC_HEADER Header;
 	off_t read_bytes;
 
+	lseek(fd, sizeof(magic_number), SEEK_SET);
+
 	while((read_bytes = read(fd, &Header, sizeof(struct ARC_HEADER))) > 0)
 	{
-		if (!Header.deleted)
-		printf("%s\n", Header.name);
+		//if (!Header.deleted)
+		//{
+			printf("%s %d \n", Header.name, Header.deleted);
+		//}
+
+        read(fd, &Data, sizeof(struct FILE_DATA));
 	}
 }
-
