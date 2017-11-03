@@ -11,36 +11,33 @@ int main (int argc, char * argv[])
 		return 1;
 	}
 
-	arc_write(fd, "test.txt");
-	arc_write(fd, "test1.txt");
-
-	printf("\nAll files:\n");
-	arc_list(fd);
-
-	printf("\nFiles data:\n");
-	arc_read(fd, "test.txt");
-	arc_read(fd, "test1.txt");
-
-	printf("\nDelete one and show list:\n");
-	arc_delete(fd, "test.txt");
-
-	printf("\nAll files:\n");
-	arc_list(fd);
-	
-	printf("\nAdd one file and see list:\n");
-	arc_write(fd, "test3.txt");
-	arc_list(fd);
-	arc_read(fd, "test3.txt");
-
-	printf("\nMake copy\n");
-	arc_copy(fd, "test3.txt");
-	arc_list(fd);
-	arc_read(fd, "test3.txt(copy)");
-	
-	printf("\nRename test1.txt into _test1.txt\n");
-
-	arc_rename(fd, "test1.txt", "_test1.txt");
-	arc_list(fd);
+	if (argc >= 2)
+	{
+		if (!strcmp(argv[1], "-w"))
+		{
+			arc_write(fd, argv[2]);
+		}
+		else if (!strcmp(argv[1], "-r"))
+		{
+			arc_read(fd, argv[2]);
+		}
+		else if (!strcmp(argv[1], "-ls"))
+		{
+			arc_list(fd);
+		}
+		else if (!strcmp(argv[1], "-cp"))
+		{
+			arc_copy(fd, argv[2]);
+		}
+		else if (!strcmp(argv[1], "-rm"))
+		{
+			arc_delete(fd, argv[2]);
+		}
+		else if (!strcmp(argv[1], "-mv"))
+		{
+			arc_rename(fd, argv[2], argv[3]);
+		}
+	}
 
 	close(fd);
 	return 0;
