@@ -11,7 +11,7 @@ int arc_write(int fd, char * filename)
 
 
 	Header.deleted = 0;
-	char * data = data_read(filename);
+	char *    data = data_read(filename);
 
 	strncpy(Header.name, filename, filenamesize);
 	strncpy(Data.data, data, filesize);
@@ -42,10 +42,8 @@ char * data_read(char * filename)
 		printf("%s\n","Fileopen error");
 	}
 
-	off_t fsize;
-
-	fsize = lseek(f, 0, SEEK_END);
-	char *data = malloc(fsize + 1);
+	off_t fsize = lseek(f, 0, SEEK_END);
+	char *data  = malloc(fsize + 1);
 	lseek(f, 0, SEEK_SET);
 	read(f, data, fsize);
 
@@ -96,8 +94,6 @@ int del_files(int fd) //point to deleted file
 	lseek(fd, sizeof(magic_number), SEEK_SET);
 	while((read_bytes = read(fd, &Header, sizeof(struct ARC_HEADER))) > 0)
 	{
-
-
         if (Header.deleted)
         {
            	off_t offset = lseek(fd, 0, SEEK_CUR);
@@ -141,10 +137,10 @@ int arc_read(int fd, char * filename)
     lseek(fd, 0, SEEK_SET);
     return 0;
 }
-
+/*--------------------------------------------------------------------*/
 int arc_delete(int fd, char * filename)
 {
-	struct FILE_DATA Data;
+	struct FILE_DATA  Data;
 	struct ARC_HEADER Header;
 	off_t read_bytes;
 	//lseek(fd, 0, SEEK_SET);
@@ -164,6 +160,7 @@ int arc_delete(int fd, char * filename)
         	{
             	off_t cur = lseek(fd, 0, SEEK_CUR);
             	lseek(fd, cur - sizeof(struct ARC_HEADER), SEEK_SET);
+
             	Header.deleted = 1;
             	write(fd, &Header, sizeof(struct ARC_HEADER));
 
@@ -198,4 +195,97 @@ void arc_list(int fd)
 
 	//lseek(fd, 0, SEEK_SET);
 }
+/*--------------------------------------------------------------------*/
+int arc_copy(int fd, char * filename)
+{
+	struct FILE_DATA Data;
+	struct ARC_HEADER Header;
+	off_t read_bytes;
 
+	lseek(fd, sizeof(magic_number), SEEK_SET);
+
+	while((read_bytes = read(fd, &Header, sizeof(struct ARC_HEADER))) > 0)
+	{
+        
+        read(fd, &Data, sizeof(struct FILE_DATA));
+
+		if (!strcmp(filename, Header.name))
+		{
+			if (Header.deleted)
+			{
+				return 0;
+			}
+			
+
+			char * new_name = copied_name(filename);
+
+			if (exist(fd, new_name))
+			{
+				printf("Copy already exists\n");
+				return 0;
+			}
+
+			strncpy(Header.name, new_name, filenamesize);
+
+			del_files(fd);
+			write(fd, &Header, sizeof(struct ARC_HEADER));
+			write(fd, &Data,   sizeof(struct FILE_DATA));
+
+			return 0;
+		}
+	}
+
+	printf("File does not exist\n");
+	return 0;
+
+}
+
+char * copied_name(char * filename)
+{
+	char * copychar;
+	char * str = "(copy)";
+
+	if(copychar = malloc(strlen(str) +  strlen(filename)) + 1)
+	{
+		copychar[0] = '\0';
+		strcat(copychar, filename);
+		strcat(copychar, str);
+	}
+
+	return copychar;
+}
+/*-----------------------------------------------------------------------*/
+int	arc_rename(int fd, char * filename, char * new_filename)
+{
+	struct FILE_DATA  Data;
+	struct ARC_HEADER Header;
+	off_t  read_bytes;
+
+	lseek(fd, sizeof(magic_number), SEEK_SET);
+
+	while((read_bytes = read(fd, &Header, sizeof(struct ARC_HEADER))) > 0)
+	{
+		if (!strcmp(Header.name, filename))
+		{
+			if (Header.deleted)
+			{
+				printf("File was deleted\n");
+			}
+
+			strncpy(Header.name, new_filename, filenamesize);
+			
+			off_t cur = lseek(fd, 0, SEEK_CUR);
+            lseek(fd, cur - sizeof(struct ARC_HEADER), SEEK_SET);
+            write(fd, &Header, sizeof(struct ARC_HEADER));
+			
+			return 0;			
+		}
+
+
+        read(fd, &Data, sizeof(struct FILE_DATA));
+	}	
+
+	printf("File does not exist\n");
+	return 0;
+}
+/*--------------------------------------------------------------------*/

@@ -31,7 +31,17 @@ int main (int argc, char * argv[])
 	arc_write(fd, "test3.txt");
 	arc_list(fd);
 	arc_read(fd, "test3.txt");
+
+	printf("\nMake copy\n");
+	arc_copy(fd, "test3.txt");
+	arc_list(fd);
+	arc_read(fd, "test3.txt(copy)");
 	
+	printf("\nRename test1.txt into _test1.txt\n");
+
+	arc_rename(fd, "test1.txt", "_test1.txt");
+	arc_list(fd);
+
 	close(fd);
 	return 0;
 }
