@@ -1,4 +1,4 @@
-#Filesystem
+# Filesystem
 
 - `./arc -w filename` - append file
 - `./arc -r filename` - read file
