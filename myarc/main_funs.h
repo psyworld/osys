@@ -32,3 +32,4 @@ int    arc_read  (int, char *);
 int    exist     (int, char *);
 int    arc_delete(int, char *);
 void   arc_list  (int);
+int	   del_files (int);

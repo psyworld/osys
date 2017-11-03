@@ -13,16 +13,24 @@ int main (int argc, char * argv[])
 
 	arc_write(fd, "test.txt");
 	arc_write(fd, "test1.txt");
+
 	printf("\nAll files:\n");
 	arc_list(fd);
+
 	printf("\nFiles data:\n");
 	arc_read(fd, "test.txt");
 	arc_read(fd, "test1.txt");
+
 	printf("\nDelete one and show list:\n");
 	arc_delete(fd, "test.txt");
-	arc_read(fd, "test.txt");
+
 	printf("\nAll files:\n");
 	arc_list(fd);
+	
+	printf("\nAdd one file and see list:\n");
+	arc_write(fd, "test3.txt");
+	arc_list(fd);
+	arc_read(fd, "test3.txt");
 	
 	close(fd);
 	return 0;
