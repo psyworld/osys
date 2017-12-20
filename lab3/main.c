@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 		    sprintf((char*) (shmem), "%s ", time_str);
         }
     }
-
+    
     //ну на всякий
     shmdt(shmem);
     shmctl(shm_id, IPC_RMID, NULL);
