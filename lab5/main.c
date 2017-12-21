@@ -68,7 +68,7 @@ int main(int argc, char** argv)
 
     if(shmem == (void*)-1)
     {
-        printf("\n", );
+        printf("Беда, не подстыковать\n");
         exit(-1);
     }
 
