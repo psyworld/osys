@@ -78,7 +78,7 @@ int main(int argc, char** argv)
 		    sleep(1);
 		    time_t t     = time(NULL);
 		    struct tm tm = *localtime(&t);
-		    sprintf(time_str, "%d:%d:%d parent time", tm.tm_hour, tm.tm_min, tm.tm_sec); //адкватная запись времечка
+		    sprintf(time_str, "%d:%d:%d parent time\n", tm.tm_hour, tm.tm_min, tm.tm_sec); //адкватная запись времечка
 		    printf("%s\n", time_str);
 		    sprintf((char*) (shmem), "%s ", time_str);
         }
