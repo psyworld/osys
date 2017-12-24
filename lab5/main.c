@@ -87,13 +87,15 @@ int main(int argc, char** argv)
             sb.sem_op = -1; // lock
             //semop - ф-ия для манипулирования значениями семафоров
 
-            if (semop(semid, &sb, 1) == -1) 
+            if (semop(semid, &sb, 1) == -1)
+            {
                 printf("Беда, semop error\n");
-
+            	return 0;
+            };
             printf("read: %s\n", (char*) shmem);
-            sb.sem_op = 1; // unlock        
-            semop(semid, &sb, 1);
+
         }
+        return 0;
     }
     else
     {
@@ -106,12 +108,9 @@ int main(int argc, char** argv)
 
         while(1)
         {
-            sb.sem_op = -1; // lock
-            semop(semid, &sb, 1);
-
             sleep(1);
 
-            time_t t = time(NULL);
+            time_t t     = time(NULL);
             struct tm tm = *localtime(&t);
 
             printf("write:");
@@ -119,6 +118,7 @@ int main(int argc, char** argv)
             printf("%s\n", time_str);
       
             sprintf((char*) (shmem), "%s\n", time_str);
+            
             sb.sem_op = 1; // unlock
             semop(semid, &sb, 1);
         }
