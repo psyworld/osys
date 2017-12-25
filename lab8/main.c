@@ -78,7 +78,7 @@ int main(int argc, char** argv)
       		sprintf(time_str, "ID:%p %d:%d:%d parent time\n", pthread_self(), tm.tm_hour, tm.tm_min, tm.tm_sec);
       		printf("%s\n", time_str);
             
-            dprintf(fifo_fd, "%p\n", t); 
+            dprintf(fifo_fd, "%s\n", time_str); 
         }
     }
 }   
